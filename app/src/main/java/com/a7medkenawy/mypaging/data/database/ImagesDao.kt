@@ -1,17 +1,20 @@
-package com.a7medkenawy.mypaging.domain.repository
+package com.a7medkenawy.mypaging.data.database
 
+import androidx.room.*
+import com.a7medkenawy.mypaging.domain.model.Hit
 import com.a7medkenawy.mypaging.domain.model.ImageResponse
 import com.a7medkenawy.mypaging.domain.model.databaseentity.ImagesResponseEntity
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 
-interface ResponseRepository {
+@Dao
+interface ImagesDao {
 
-    suspend fun getImagesFromApi(page: Int): Response<ImageResponse>
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllImages(imagesResponseEntity: ImagesResponseEntity)
 
+    @Query("select * from images_table order by id asc")
     fun getAllImages(): Flow<List<ImagesResponseEntity>>
 
+//    @Query("delete from images_table")
 //    suspend fun deleteAllImages()
 }

@@ -1,8 +1,6 @@
 package com.a7medkenawy.mypaging.domain.model
 
-
 import com.google.gson.annotations.SerializedName
-
 data class Hit(
     @SerializedName("collections")
     val collections: Int?,
