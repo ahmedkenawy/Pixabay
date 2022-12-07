@@ -21,16 +21,16 @@ class ImagesPagination(val responseUseCase: ResponseUseCase, var context: Contex
             val currentPageList = params.key ?: 1
             val responseList = mutableListOf<Hit>()
             var data = emptyList<Hit>()
-            if (isOnline()) {
-                val response = responseUseCase.getImagesFromApi(currentPageList)
-                if (response.isSuccessful){
-                    data = (response.body()?.hits ?: emptyList())
-                    responseUseCase.insertAllImages(ImagesResponseEntity(response.body()!!))}
+            val response = responseUseCase.getImagesFromApi(currentPageList)
+            if (response.isSuccessful) {
+                data = (response.body()?.hits ?: emptyList())
+                responseUseCase.insertAllImages(ImagesResponseEntity(response.body()!!))
             } else {
                 responseUseCase.getAllImages().collect {
-                    if (!it[0].imageResponse.hits.isNullOrEmpty())
+                    if (it[0].imageResponse.hits.isNotEmpty())
                         data = it[0].imageResponse.hits
                 }
+                Toast.makeText(context,"Done",Toast.LENGTH_LONG).show()
             }
 
             responseList.addAll(data as Collection<Hit>)
